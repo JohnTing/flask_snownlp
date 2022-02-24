@@ -12,10 +12,18 @@ from snownlp import SnowNLP
 import jieba
 from flask_sqlalchemy import SQLAlchemy
 
+import os
+
+
+datebase_url = os.environ.get("datebase_url", "mysql+pymysql://sentiment:sentimentpassword@host.docker.internal:3306/sentiment")
+flask_port = int(os.environ.get("flask_port", 8401))
+
+
+
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sentiment:sentiment@localhost:3306/sentiment'
+app.config['SQLALCHEMY_DATABASE_URI'] = datebase_url
 db = SQLAlchemy(app)
 
 
@@ -37,7 +45,6 @@ def hello_world():
     text = None
     user_id = None
     experiment_id = None
-
 
     if request.method == 'POST':
         request_json  = request.get_json()
@@ -72,4 +79,4 @@ def getSentiment(text):
     return {"sentiment": s.sentiments, "words":seg_list}
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8401)
+    app.run(debug=False, host="0.0.0.0", port=flask_port)
