@@ -5,20 +5,19 @@
 # conda install pyMySQLdb
 # conda install -c anaconda pymysql
 
-
 from ast import arg
 from flask import Flask, jsonify, request
 from snownlp import SnowNLP
 import jieba
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_cors import CORS
+CORS(app)
+
 import os
 
-
-datebase_url = os.environ.get("datebase_url", "mysql+pymysql://sentiment:sentimentpassword@host.docker.internal:3306/sentiment")
+datebase_url = "mysql+pymysql://" + os.environ.get("datebase_url", "username:password@host.docker.internal:3306/snownlp")
 flask_port = int(os.environ.get("flask_port", 8401))
-
-
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -51,12 +50,11 @@ def hello_world():
         text = request_json.get("text", "")
         user_id = request_json.get("user_id", "")
         experiment_id = request_json.get("experiment_id", "")
-
     else:
-        text = request.args.get("text", "")
-        user_id = request.args.get("user_id", "")
-        experiment_id = request.args.get(experiment_id, "")
-
+        request_json = request.args
+        text = request_json.get("text", "")
+        user_id = request_json.get("user_id", "")
+        experiment_id = request_json.get("experiment_id", "")
 
     if text and len(text) > 0:
         result = getSentiment(text)
@@ -78,5 +76,13 @@ def getSentiment(text):
     seg_list = list(jieba.cut(text, cut_all=False))
     return {"sentiment": s.sentiments, "words":seg_list}
 
+
+context = ('ssl/certificate.crt', 'ssl/private.key')
+
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=flask_port)
+    
+    if os.path.isfile(context[0]) and os.path.isfile(context[1]):
+        app.run(debug=False, host="0.0.0.0", port=flask_port, ssl_context=context)
+    else:
+        app.run(debug=False, host="0.0.0.0", port=flask_port, ssl_context='adhoc')
+    
