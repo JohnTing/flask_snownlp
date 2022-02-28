@@ -12,7 +12,7 @@ import jieba
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_cors import CORS
-CORS(app)
+
 
 import os
 
@@ -21,8 +21,8 @@ flask_port = int(os.environ.get("flask_port", 8401))
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-
 app.config['SQLALCHEMY_DATABASE_URI'] = datebase_url
+CORS(app)
 db = SQLAlchemy(app)
 
 
