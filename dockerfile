@@ -1,8 +1,8 @@
 FROM continuumio/miniconda3
 
 
-RUN conda create -n snownlp python=3.8
-RUN activate snownlp
+RUN conda install python=3.8
+
 RUN conda install -c conda-forge snownlp jieba
 RUN conda install flask pyinstaller 
 RUN conda install -c anaconda pymysql 
