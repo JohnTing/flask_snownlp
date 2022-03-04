@@ -8,7 +8,9 @@ ENV datebase_url=mysql+pymysql://username:password@host.docker.internal:3306/dat
 # 分別為 username password @host.docker.internal:3306 database
 
 # 執行 image
-docker run -p 8401:8401 -e datebase_url=sentiment:sentimentpassword@host.docker.internal:3306/sentiment -d flask_snownlp
+
+docker run -d -p 8401:8401 -e datebase_url=sentiment:sentimentpassword@host.docker.internal:3306/sentiment  -v c:\docker_ssl:/ssl flask_snownlp
 
 # 測試
-localhost:8401/s?user_id=u測試&experiment_id=e測試&text=今天天氣不錯
+https://localhost:8401/s?user_id=u測試&experiment_id=e測試&text=今天天氣不錯
+

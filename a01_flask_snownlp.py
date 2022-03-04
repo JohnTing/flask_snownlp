@@ -13,7 +13,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_cors import CORS
 
-
 import os
 
 datebase_url = "mysql+pymysql://" + os.environ.get("datebase_url", "username:password@host.docker.internal:3306/snownlp")
@@ -82,7 +81,9 @@ context = ('ssl/certificate.crt', 'ssl/private.key')
 if __name__ == "__main__":
     
     if os.path.isfile(context[0]) and os.path.isfile(context[1]):
+        print("use %s and %s as ssl." % (context[0], context[1]))
         app.run(debug=False, host="0.0.0.0", port=flask_port, ssl_context=context)
     else:
-        app.run(debug=False, host="0.0.0.0", port=flask_port, ssl_context='adhoc')
+        print("ssl file no found, use http.")
+        app.run(debug=False, host="0.0.0.0", port=flask_port)
     
