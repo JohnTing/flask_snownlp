@@ -1,0 +1,40 @@
+2022-03-12 00:11:17  (rev 0)
+    +ca-certificates-2022.2.1 (defaults/win-64)
+    +certifi-2021.10.8 (defaults/win-64)
+    +openssl-1.1.1m (defaults/win-64)
+    +pip-21.2.2 (defaults/win-64)
+    +python-3.8.12 (defaults/win-64)
+    +setuptools-58.0.4 (defaults/win-64)
+    +sqlite-3.38.0 (defaults/win-64)
+    +vc-14.2 (defaults/win-64)
+    +vs2015_runtime-14.27.29016 (defaults/win-64)
+    +wheel-0.37.1 (defaults/noarch)
+    +wincertstore-0.2 (defaults/win-64)
+
+2022-03-12 00:11:34  (rev 1)
+     ca-certificates  {2022.2.1 (defaults/win-64) -> 2020.10.14 (anaconda/win-64)}
+     certifi  {2021.10.8 (defaults/win-64) -> 2020.6.20 (anaconda/win-64)}
+    +cffi-1.14.3 (anaconda/win-64)
+    +click-7.1.2 (anaconda/noarch)
+    +cryptography-3.1.1 (anaconda/win-64)
+    +flask-1.1.2 (anaconda/noarch)
+    +itsdangerous-1.1.0 (anaconda/noarch)
+    +jinja2-2.11.2 (anaconda/noarch)
+    +markupsafe-1.1.1 (anaconda/win-64)
+    +pycparser-2.20 (anaconda/noarch)
+    +pymysql-0.10.1 (anaconda/win-64)
+    +six-1.15.0 (anaconda/noarch)
+    +werkzeug-1.0.1 (anaconda/noarch)
+
+2022-03-12 00:11:52  (rev 2)
+     ca-certificates  {2020.10.14 (anaconda/win-64) -> 2021.10.8 (conda-forge/win-64)}
+     certifi  {2020.6.20 (anaconda/win-64) -> 2021.10.8 (conda-forge/win-64)}
+     openssl  {1.1.1m (defaults/win-64) -> 1.1.1l (conda-forge/win-64)}
+    +flask-cors-3.0.10 (conda-forge/noarch)
+    +flask-sqlalchemy-2.5.1 (conda-forge/noarch)
+    +greenlet-1.1.2 (conda-forge/win-64)
+    +jieba-0.42.1 (conda-forge/noarch)
+    +python_abi-3.8 (conda-forge/win-64)
+    +snownlp-0.12.3 (conda-forge/noarch)
+    +sqlalchemy-1.4.32 (conda-forge/win-64)
+

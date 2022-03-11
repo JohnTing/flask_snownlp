@@ -2,11 +2,8 @@ FROM continuumio/miniconda3
 
 
 RUN conda install python=3.8
-
-RUN conda install -c conda-forge snownlp jieba
-RUN conda install flask pyinstaller 
-RUN conda install -c anaconda pymysql 
-RUN conda install -c conda-forge flask-sqlalchemy flask-cors
+RUN conda install -c anaconda pymysql flask
+RUN conda install -c conda-forge snownlp jieba flask-sqlalchemy flask-cors
 
 COPY a01_flask_snownlp.py .
 
