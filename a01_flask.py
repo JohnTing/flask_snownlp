@@ -7,7 +7,6 @@
 
 from ast import arg
 from flask import Flask, jsonify, request
-from snownlp import SnowNLP
 import jieba
 import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -16,7 +15,7 @@ from flask_cors import CORS
 
 import os
 
-datebase_url = "mysql+pymysql://" + os.environ.get("datebase_url", "username:password@host.docker.internal:3306/snownlp")
+datebase_url = "mysql+pymysql://" + os.environ.get("datebase_url", "username:password@host.docker.internal:3306/jieba")
 flask_port = int(os.environ.get("flask_port", 8401))
 
 app = Flask(__name__)
@@ -26,7 +25,7 @@ CORS(app)
 db = SQLAlchemy(app)
 
 
-class Sentiments(db.Model):
+class jiebaSentiments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(64), nullable=True)
     experiment_id = db.Column(db.String(64), nullable=True)
@@ -60,7 +59,7 @@ def hello_world():
         sentiment = result.get("sentiment", -1)
         words = result.get("words", "")
         
-        resultdb = Sentiments(experiment_id=experiment_id, 
+        resultdb = jiebaSentiments(experiment_id=experiment_id, 
                                 user_id=user_id, 
                                 sentiment=sentiment, text=text,words=("|".join(words)))
 
@@ -70,10 +69,57 @@ def hello_world():
     else:
         return jsonify({"error", "no text."})
 
+
+
+neg_set = set()
+pos_set = set()
+
+
+with open('ntusd-negative.txt', encoding="utf-8") as f:
+    for word in f:
+        neg_set.add(word.strip())
+        jieba.add_word(word.strip())
+    
+with open('ntusd-positive.txt', encoding="utf-8") as f:
+    for word in f:
+        pos_set.add(word.strip())
+        jieba.add_word(word.strip())
+
+
+
+
 def getSentiment(text):    
-    s = SnowNLP(text)
-    seg_list = list(jieba.cut(text, cut_all=False))
-    return {"sentiment": s.sentiments, "words":seg_list}
+
+    words = jieba.lcut(text, cut_all=False)
+    
+    
+    neg_count = 0
+    neg_words = []
+    
+    pos_count = 0
+    pos_words = []
+    
+    mid_count = 0
+
+    for word in words:
+        if word in neg_set:
+            neg_count += 1
+            neg_words.append(word)
+        elif word in pos_set:
+            pos_count += 1
+            pos_words.append(word)
+        else:
+            mid_count += 1
+    
+    if len(words) >= 1:
+        sentiment = (pos_count + mid_count*0.5)/len(words)
+    else:
+        sentiment = 0.5
+    
+    seg_list = list(words)
+    
+    
+    return {"sentiment": sentiment, "words":seg_list}
 
 
 context = ('ssl/certificate.crt', 'ssl/private.key')
