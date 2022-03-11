@@ -9,6 +9,7 @@ from ast import arg
 from flask import Flask, jsonify, request
 from snownlp import SnowNLP
 import jieba
+import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_cors import CORS
@@ -32,9 +33,8 @@ class Sentiments(db.Model):
     sentiment = db.Column(db.Float, nullable=True)
     text = db.Column(db.String(128), nullable=True)
     words = db.Column(db.String(128), nullable=True)
-
+    createAt = db.Column(db.DateTime, default=datetime.datetime.now)
 db.create_all()
-
 
 
 @app.route("/sentiment", methods=['GET', 'POST'])
